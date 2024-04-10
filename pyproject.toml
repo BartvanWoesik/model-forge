@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 name = "model-forge"
 version = "0.0.1"
 description = "An toolset to forge your own machine learning models."
-authors = ["Bart van Woesik bartwoesik1@gmail.com"]
+authors = ["Bart van Woesik <bartwoesik1@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
