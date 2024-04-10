@@ -6,6 +6,10 @@ from model_forge.model.metricevaluator import ModelEvaluator
 
 
 class TestModelEvaluator:
+    """
+    A test class for evaluating a model using various metrics.
+    """
+
     @pytest.fixture(autouse=True)
     def setup_class(self):
         self.X = np.array([[1, 1, 1], [1, 1, 1], [7, 8, 9], [10, 11, 12], [13, 14, 15]])
