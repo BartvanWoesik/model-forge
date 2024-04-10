@@ -1,13 +1,9 @@
+import pytest
 import numpy as np
 from sklearn.linear_model import LogisticRegression
-import pytest
-from src_out.model.metricevaluator import ModelEvaluator
 
+from model_forge.model.metricevaluator import ModelEvaluator
 
-import numpy as np
-from sklearn.linear_model import LogisticRegression
-import pytest
-from src_out.model.metricevaluator import ModelEvaluator
 
 class TestModelEvaluator:
     @pytest.fixture(autouse=True)
