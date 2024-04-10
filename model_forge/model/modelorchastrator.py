@@ -78,6 +78,7 @@ class ModelOrchestrator(Orchestartor):
 
 
 class TuningOrchestrator(Orchestartor):
+
     """
     Class representing the orchestrator for model tuning.
     """
@@ -100,6 +101,7 @@ class TuningOrchestrator(Orchestartor):
 
 
 class TuningParameter:
+
     def __init__(
         self,
         parameter_name: str,
@@ -161,9 +163,15 @@ class CustomPipeline(ABC, Pipeline):
         # Add your code here to transform the data
         return self[:-1].transform(X)
 
+    @property
+    def stepnames(self):
+        return list(self.named_steps.keys())
+
     @staticmethod
     def create_from_config():
         ...
+
+
 
 
 class TuningPipeline(CustomPipeline):
@@ -236,7 +244,8 @@ class ModelPipeline(CustomPipeline):
         pipeline_list = []
         for i, step in enumerate(cfg.model.model_steps):
             _step_dict = next(iter(step.items()))
-            pipeline_list.append((str(i), instantiate(_step_dict[1])))
+            _step_name = next(iter(step.keys()))
+            pipeline_list.append((_step_name, instantiate(_step_dict[1])))
 
         # Create instance of cls
         custom_pipeline = cls(steps=pipeline_list)
