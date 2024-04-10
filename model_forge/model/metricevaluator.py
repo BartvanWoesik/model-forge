@@ -3,7 +3,7 @@ from sklearn.metrics import get_scorer
 import numpy as np
 from typing import Dict, List
 
-from src_out.model.modelorchastrator import CustomPipeline
+from model_forge.model.modelorchastrator import CustomPipeline
 
 
 class ModelEvaluator:
