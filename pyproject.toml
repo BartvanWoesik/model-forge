@@ -11,6 +11,7 @@ packages = [
     { include = "model_forge" },
 ]
 
+
 [tool.poetry.dependencies]
 python = "^3.11"
 numpy = "^1.20.1"
