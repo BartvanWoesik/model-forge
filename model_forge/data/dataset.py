@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from typing import Any, Optional, Callable, Union
+from my_logger.custom_logger import logger
 
 
 class Dataset(dict):
@@ -38,6 +39,7 @@ class Dataset(dict):
         data_splitter=None,
         target_column: str = "y",
         name: str = "dataset",
+        splits_columns: list = None
     ) -> None:
         """
         Initialize a Dataset object.
@@ -54,11 +56,11 @@ class Dataset(dict):
         
         self.data_splitter = data_splitter
         self.target_column = target_column
+        self.splits_columns = splits_columns
         self.name = name
         self._is_data_splitted = False
         self.data = data
-        self._X = self.data.drop(columns=[self.target_column])
-        self._y = self.data[self.target_column]
+
         self._split_data()
         super().__init__(self.splits)
 
@@ -70,7 +72,7 @@ class Dataset(dict):
         Returns:
             pd.DataFrame: The feature matrix X.
         """
-        return self._X
+        return self['ALL'][0]
 
     @property
     def y(self) -> np.array:
@@ -80,7 +82,7 @@ class Dataset(dict):
         Returns:
             np.array: The target variable array.
         """
-        return self._y
+        return self['ALL'][1]
 
     @property
     def columns(self):
@@ -101,6 +103,9 @@ class Dataset(dict):
             tuple: A tuple representing the shape of the dataset.
         """
         return self.X.shape
+    
+
+
 
     def _split_data(self) -> None:
         """
@@ -112,28 +117,45 @@ class Dataset(dict):
         Returns:
             None
         """
+        self.splits = {}
+        self.splits['ALL'] =  [True] * len(self.data)
+        if self.splits_columns is not None:
+            for column in self.splits_columns:
+                self.splits[column] = list(self.data[column] == 1)
+
+
+
+
         self._is_data_splitted = True
-        if self.data_splitter is None:
-            self.splits = {"all_data": (self.X, self.y)}
-        else:
-            self.splits = self.data_splitter(self.X, self.y)
         self._run_checks()
+    
+    def __getitem__(self, key: Any) -> Any:
+        """
+        Retrieve an item from the dataset.
+
+        Args:
+            key (Any): The key used to retrieve the item.
+
+        Returns:
+            Any: The item corresponding to the given key.
+        """
+        indexes = super().__getitem__(key)
+        return (
+                self.data.drop(columns=self.target_column)[indexes], 
+                self.data[self.target_column][indexes]
+            )
 
     def _run_checks(self) -> None:
         """
-        Run checks on the dataset splits.
-
-        This method iterates over the dataset splits and performs checks to ensure data integrity.
+        Run checks on the splits of the dataset.
 
         Raises:
-            AssertionError: If any of the checks fail.
+            AssertionError: If any of the splits is None, not a list, or empty.
         """
-        for split_name, (X, y) in self.splits.items():
-            assert X is not None
-            # check_empty_df(X)
-            assert (
-                X.columns.tolist() == self.columns
-            ), f"Columns of split '{split_name}' do not match columns of split"
+        for split_name, indexes in self.splits.items():
+            assert indexes is not None, f"Split '{split_name}' is None"
+            assert isinstance(indexes, list), f"Split '{split_name}' is not a list"
+            assert len(indexes) != 0, f"Split '{split_name}' is empty"
 
     def __getattr__(self, __name: str) -> Any:
         """
@@ -186,47 +208,16 @@ class Dataset(dict):
             raise ValueError(
                 f"Invalid Split: You requested split '{split}'. Valid splits are: {*list(self.splits.keys()),} "
             )
-        X, y = self.splits[split][0], self.split[split][1]
+        X, y = self[split][0], self[split][1]
         if sample_n_rows is not None:
             X = X.sample(sample_n_rows, random_state=random_state)
             y = y[X.index]
 
         if return_X_y:
-            return X, y.rename(self.target_column)
+            return X, y
         else:
             return X.assign(**{self.target_column: y})
 
-    def load_train_test(
-        self,
-        train_split: str = "train",
-        test_split: str = "test",
-        sample_n_rows: Optional[int] = None,
-        random_state: int = 36,
-    ):
-        """
-        Load the training and testing data splits from the dataset.
-
-        Parameters:
-        - train_split (str): The name of the training split. Default is "train".
-        - test_split (str): The name of the testing split. Default is "test".
-        - sample_n_rows (Optional[int]): The number of rows to sample from the dataset. Default is None.
-        - random_state (int): The random state for sampling rows. Default is 36.
-
-        Returns:
-        - X_train (array-like): The features of the training data.
-        - X_test (array-like): The features of the testing data.
-        - y_train (array-like): The labels of the training data.
-        - y_test (array-like): The labels of the testing data.
-        """
-
-        X_train, y_train = self.load_split(
-            split=train_split,
-            return_X_y=True,
-            sample_n_rows=sample_n_rows,
-            random_state=random_state,
-        )
-        X_test, y_test = self.load_split(split=test_split, return_X_y=True)
-        return X_train, X_test, y_train, y_test
 
     @classmethod
     def create_from_pipeline(
@@ -297,3 +288,5 @@ class Dataset(dict):
         dataset.splits = splits
         dataset._run_checks()
         return dataset
+
+    
