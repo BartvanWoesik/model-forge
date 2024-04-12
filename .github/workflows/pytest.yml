@@ -1,9 +1,7 @@
 name: Python application test with pytest
 
 on:
-  push:
-    branches:
-      - main
+
   pull_request:
     branches:
       - main
