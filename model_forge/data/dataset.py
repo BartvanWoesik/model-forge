@@ -74,7 +74,7 @@ class Dataset(dict):
         return self['ALL'][0]
 
     @property
-    def y(self) -> np.array:
+    def y(self) -> np.array:  
         """
         Returns the target variable array.
         
