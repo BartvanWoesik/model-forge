@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 from typing import Any, Optional, Callable, Union
-from my_logger.custom_logger import logger
 
 
 class Dataset(dict):
@@ -75,7 +74,7 @@ class Dataset(dict):
         return self['ALL'][0]
 
     @property
-    def y(self) -> np.array:
+    def y(self) -> np.array:  
         """
         Returns the target variable array.
         
