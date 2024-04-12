@@ -1,0 +1,12 @@
+site_name: Model Forge
+nav:
+  - Home: index.md
+theme: material
+
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+  - table-reader
+  - git-authors
