@@ -38,7 +38,7 @@ class Dataset(dict):
         data_splitter=None,
         target_column: str = "y",
         name: str = "dataset",
-        splits_columns: list = None
+        splits_columns: list = None,
     ) -> None:
         """
         Initialize a Dataset object.
@@ -52,7 +52,7 @@ class Dataset(dict):
         Returns:
             None
         """
-        
+
         self.data_splitter = data_splitter
         self.target_column = target_column
         self.splits_columns = splits_columns
@@ -67,27 +67,27 @@ class Dataset(dict):
     def X(self) -> pd.DataFrame:
         """
         Returns the feature matrix X.
-        
+
         Returns:
             pd.DataFrame: The feature matrix X.
         """
-        return self['ALL'][0]
+        return self["ALL"][0]
 
     @property
-    def y(self) -> np.array:  
+    def y(self) -> np.array:
         """
         Returns the target variable array.
-        
+
         Returns:
             np.array: The target variable array.
         """
-        return self['ALL'][1]
+        return self["ALL"][1]
 
     @property
     def columns(self):
         """
         Returns a list of column names in the dataset.
-        
+
         Returns:
             list: A list of column names.
         """
@@ -97,14 +97,11 @@ class Dataset(dict):
     def shape(self):
         """
         Returns the shape of the dataset.
-        
+
         Returns:
             tuple: A tuple representing the shape of the dataset.
         """
         return self.X.shape
-    
-
-
 
     def _split_data(self) -> None:
         """
@@ -117,17 +114,14 @@ class Dataset(dict):
             None
         """
         self.splits = {}
-        self.splits['ALL'] =  [True] * len(self.data)
+        self.splits["ALL"] = [True] * len(self.data)
         if self.splits_columns is not None:
             for column in self.splits_columns:
                 self.splits[column] = list(self.data[column] == 1)
 
-
-
-
         self._is_data_splitted = True
         self._run_checks()
-    
+
     def __getitem__(self, key: Any) -> Any:
         """
         Retrieve an item from the dataset.
@@ -140,9 +134,9 @@ class Dataset(dict):
         """
         indexes = super().__getitem__(key)
         return (
-                self.data.drop(columns=self.target_column)[indexes], 
-                self.data[self.target_column][indexes]
-            )
+            self.data.drop(columns=self.target_column)[indexes],
+            self.data[self.target_column][indexes],
+        )
 
     def _run_checks(self) -> None:
         """
@@ -169,7 +163,7 @@ class Dataset(dict):
         Raises:
             AttributeError: If the attribute specified by __name is not found.
         """
-   
+
         if attr_name.startswith(("X_", "y_")):
             try:
                 _, split_name = attr_name.split("_", 1)
@@ -180,13 +174,17 @@ class Dataset(dict):
                         else self[split_name][1]
                     )
             except AttributeError as e:
-                raise AttributeError(f"Split '{attr_name}' not found. Attribute. Original error: {str(e)}")
+                raise AttributeError(
+                    f"Split '{attr_name}' not found. Attribute. Original error: {str(e)}"
+                )
 
         if not attr_name.startswith(("X_", "y_")):
             try:
-                    return super().__getattr__(attr_name)
+                return super().__getattr__(attr_name)
             except AttributeError as e:
-                raise AttributeError(f"Attribute '{attr_name}' not found. Original error: {str(e)}")
+                raise AttributeError(
+                    f"Attribute '{attr_name}' not found. Original error: {str(e)}"
+                )
 
         raise AttributeError(f"Attribute '{attr_name}' not found")
 
@@ -227,7 +225,6 @@ class Dataset(dict):
             return X, y
         else:
             return X.assign(**{self.target_column: y})
-
 
     @classmethod
     def create_from_pipeline(
@@ -298,5 +295,3 @@ class Dataset(dict):
         dataset.splits = splits
         dataset._run_checks()
         return dataset
-
-    
