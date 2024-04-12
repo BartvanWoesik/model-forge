@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 from typing import Any, Optional, Callable, Union
-from my_logger.custom_logger import logger
 
 
 class Dataset(dict):
