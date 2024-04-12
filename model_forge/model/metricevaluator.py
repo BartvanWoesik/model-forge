@@ -59,6 +59,7 @@ class ModelEvaluator:
         - results (dict): A dictionary containing the evaluation results for each metric.
         """
         scoring = {}
+        # TODO: Remove dependecie on sklearn, so we have the same approach for sklearn and custom metrics.
         for metric in self.sklearn_metrics:
             scoring[metric] = get_scorer(metric)
         for metric in list(self.custom_scorers.keys()):
