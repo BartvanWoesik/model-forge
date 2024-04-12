@@ -101,7 +101,6 @@ class TuningOrchestrator(Orchestartor):
 
 
 class TuningParameter:
-
     def __init__(
         self,
         parameter_name: str,
@@ -170,8 +169,6 @@ class CustomPipeline(ABC, Pipeline):
     @staticmethod
     def create_from_config():
         ...
-
-
 
 
 class TuningPipeline(CustomPipeline):
