@@ -28,10 +28,6 @@ def test_y(dataset):
     expected_y = np.array([0, 0, 1, 1, 1])
     assert np.array_equal(dataset.y, expected_y)
 
-# def test_columns(dataset):
-#     expected_columns = ['feature1', 'feature2', 'target']
-#     assert dataset.all_columns == expected_columns
-
 def test_shape(dataset):
     expected_shape = (5, 3)
     assert dataset.shape == expected_shape
