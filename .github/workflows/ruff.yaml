@@ -22,7 +22,7 @@ jobs:
                 node-version: 14
 
         -   name: Install dependencies
-            run: npm install
+            run: poetry install 
 
         -   name: Run Ruff rules check
-            run: npm run ruff-check
+            run: poetry run ruff check
