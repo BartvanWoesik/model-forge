@@ -157,7 +157,7 @@ class Dataset(dict):
             assert isinstance(indexes, list), f"Split '{split_name}' is not a list"
             assert len(indexes) != 0, f"Split '{split_name}' is empty"
 
-    def __getattr__(self, __name: str) -> Any:
+    def __getattr__(self, attr_name: str) -> Any:
         """
         Retrieves the attribute specified by __name.
 
@@ -170,15 +170,26 @@ class Dataset(dict):
         Raises:
             AttributeError: If the attribute specified by __name is not found.
         """
-        if __name.startswith(("X_", "y_")):
-            _, split_name = __name.split("_", 1)
-            if split_name in self.splits.keys():
-                return (
-                    self.splits[split_name][0]
-                    if __name.startswith("X_")
-                    else self.splits[split_name][1]
-                )
-        raise AttributeError(f"Attribute '{__name}' not found")
+   
+        if attr_name.startswith(("X_", "y_")):
+            try:
+                _, split_name = attr_name.split("_", 1)
+                if split_name in self.keys():
+                    return (
+                        self[split_name][0]
+                        if attr_name.startswith("X_")
+                        else self[split_name][1]
+                    )
+            except AttributeError as e:
+                raise AttributeError(f"Split '{attr_name}' not found. Attribute. Original error: {str(e)}")
+
+        if not attr_name.startswith(("X_", "y_")):
+            try:
+                    return super().__getattr__(attr_name)
+            except AttributeError as e:
+                raise AttributeError(f"Attribute '{attr_name}' not found. Original error: {str(e)}")
+
+        raise AttributeError(f"Attribute '{attr_name}' not found")
 
     def load_split(
         self,

@@ -51,3 +51,22 @@ def test_create_from_pipeline():
     dataset = Dataset.create_from_pipeline(data_loading_function=data_loading_function, target_column='target')
     assert isinstance(dataset, Dataset)
     assert dataset.shape == (5, 2)
+
+def test_x_train_attribute_retrival(dataset):
+    expected_X_train = pd.DataFrame({
+        'feature1': [3, 4, 5],
+        'feature2': [8, 9, 10],
+        'train': [1, 1, 1]
+    })
+
+    assert dataset.X_train.reset_index(drop = True).equals(expected_X_train.reset_index(drop = True))
+
+def test_missing_split_attribute(dataset):
+  
+    with pytest.raises(AttributeError):
+        dataset.X_test
+
+def test_missing_general_attribute(dataset):
+  
+    with pytest.raises(AttributeError):
+        dataset.v
