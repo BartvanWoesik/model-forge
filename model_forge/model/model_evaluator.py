@@ -1,9 +1,10 @@
-from sklearn.model_selection import cross_validate
-from sklearn.metrics import get_scorer
-import numpy as np
-from typing import Dict, List
+from typing import Dict, Callable, List
 
-from model_forge.model.modelorchastrator import CustomPipeline
+import numpy as np
+
+from sklearn.model_selection import cross_validate
+
+from model_forge.model.model_orchastrator import CustomPipeline
 
 
 class ModelEvaluator:
@@ -16,37 +17,29 @@ class ModelEvaluator:
     - cv (int, optional): The number of cross-validation folds. Defaults to 5.
     """
 
-
-    def __init__(self, sklearn_metrics: List[str], custom_scorers: dict = None, cv: int = 5) -> None:
+    def __init__(self, metrics: dict[str, Callable], cv: int = 5) -> None:
         """
         Initialize the MetricEvaluator class.
 
         Parameters:
         - sklearn_metrics (List[str]): A list of sklearn metrics to be used for evaluation.
-        - custom_scorers (dict, optional): A dictionary of custom scorers. Defaults to None.
+        - metrics (dict, optional): A dictionary of metric scorers. Defaults to an empty dict.
         - cv (int, optional): The number of cross-validation folds. Defaults to 5.
         """
-        self.sklearn_metrics = sklearn_metrics
-        if custom_scorers is None:
-            self.custom_scorers = {}
-        else:
-            self.custom_scorers = custom_scorers
+        self._metrics = metrics
         self.cv = cv
 
     @property
     def metrics(self) -> List[str]:
         """
-        Get the list of evaluation metrics.
+        Get a list of the evaluation metrics.
 
         Returns:
-        - metric_list (List[str]): A list of evaluation metrics.
+        - metric (Dict[str, Callable]): A mapping of evaluation metrics.
         """
-        metric_list = self.sklearn_metrics
-        if self.custom_scorers:
-            metric_list.append(list(self.custom_scorers.keys()))
-        return metric_list
+        return list(self._metrics.keys())
 
-    def evaluate(self, model: CustomPipeline,  X: np.array, y: np.array) -> Dict[str, float]:
+    def evaluate(self, model: CustomPipeline, X: np.array, y: np.array) -> Dict[str, float]:
         """
         Evaluate the model using cross-validation and multiple metrics.
 
@@ -56,14 +49,7 @@ class ModelEvaluator:
         - y (array-like): The target variable.
 
         Returns:
-        - results (dict): A dictionary containing the evaluation results for each metric.
+            A dictionary containing the evaluation results for each metric.
         """
-        scoring = {}
-        # TODO: Remove dependecie on sklearn, so we have the same approach for sklearn and custom metrics.
-        for metric in self.sklearn_metrics:
-            scoring[metric] = get_scorer(metric)
-        for metric in list(self.custom_scorers.keys()):
-            scoring[metric] = self.custom_scorers[metric]
-
-        results = cross_validate(model, X, y, scoring=scoring, cv=self.cv)
-        return results
+        # TODO: re-write cross_validate to minimize dependence on sklearn
+        return cross_validate(estimator=model, X=X, y=y, scoring=self.metrics, cv=self.cv)
