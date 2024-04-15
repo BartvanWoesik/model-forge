@@ -1,10 +1,13 @@
 import pytest
 import numpy as np
+
+from omegaconf import OmegaConf
 from sklearn.linear_model import LogisticRegression
 
-from model_forge.model.modelorchastrator import ModelPipeline
-from omegaconf import OmegaConf
+from model_forge.model.model_orchastrator import ModelPipeline
 
+
+@pytest.mark.unit
 class TestModelPipeline:
     """
     A test class for evaluating a model using various metrics.
