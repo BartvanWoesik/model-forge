@@ -7,6 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from model_forge.model.model_orchastrator import ModelPipeline
 
 
+@pytest.mark.unit
 class TestModelPipeline:
     """
     A test class for evaluating a model using various metrics.

@@ -1,2 +1,5 @@
 **.pyc
 .idea/
+.coverage
+*.pytest_cache*
+*coverage.xml

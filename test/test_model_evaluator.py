@@ -7,6 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from model_forge.model.model_evaluator import ModelEvaluator
 
 
+@pytest.mark.unit
 class TestModelEvaluator:
     """
     A test class for evaluating a model using various metrics.
