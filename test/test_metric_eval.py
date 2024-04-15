@@ -4,6 +4,7 @@ from sklearn.linear_model import LogisticRegression
 
 from model_forge.model.metricevaluator import ModelEvaluator
 
+
 class TestModelEvaluator:
     """
     A test class for evaluating a model using various metrics.
@@ -29,10 +30,12 @@ class TestModelEvaluator:
         assert results["test_accuracy"].tolist() == expected_results["accuracy"]
         assert results["test_precision"].tolist() == expected_results["precision"]
         assert results["test_recall"].tolist() == expected_results["recall"]
-        
+
     def test_non_existing_metric(self):
         with pytest.raises(ValueError):
-            broken_evaluator = ModelEvaluator(sklearn_metrics=['non_existing_metric'], cv=2)
+            broken_evaluator = ModelEvaluator(
+                sklearn_metrics=["non_existing_metric"], cv=2
+            )
             broken_evaluator.evaluate(self.model, self.X, self.y)
 
     def test_metrics_property(self):
