@@ -12,6 +12,7 @@ class TestModelEvaluator:
     """
     A test class for evaluating a model using various metrics.
     """
+
     metric_names = ["accuracy", "precision", "recall"]
 
     @pytest.fixture(autouse=True)
