@@ -234,6 +234,7 @@ class Dataset(dict):
         data_splitter=None,
         target_column="y",
         name: str = "dataset",
+        splits_columns=None,
     ):
         """
         Create a dataset from a data loading function and optional data pipeline.
@@ -258,6 +259,7 @@ class Dataset(dict):
             data_splitter=data_splitter,
             target_column=target_column,
             name=name,
+            splits_columns=splits_columns,
         )
 
     @classmethod
