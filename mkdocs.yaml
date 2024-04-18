@@ -1,12 +1,58 @@
 site_name: Model Forge
 nav:
   - Home: index.md
-theme: material
+  - Model:
+    - model evaluator: model_evaluator.md
+    - model orchastrator: model_orchastrator.md
+  - Data:
+    - data pipeline: datapipeline.md
+    - dataset: dataset.md
+    - predictions: predictions.md
+
+
+theme:
+  name: material
+  features:
+        - content.tabs.link
+        - content.code.copy
+        - navigation.instant
+        - navigation.tracking
+        - navigation.tabs
+        - navigation.tabs.sticky
+        - navigation.sections
+        - navigation.expand
+
+  palette:
+        - media: "(prefers-color-scheme: light)"
+          scheme: default
+          toggle:
+              icon: material/toggle-switch-off-outline
+              name: Switch to dark mode
+
+        - media: "(prefers-color-scheme: dark)"
+          scheme: slate
+          toggle:
+              icon: material/toggle-switch
+              name: Switch to light mode
 
 
 plugins:
   - search
-  # - mkdocstrings:
-  #     default_handler: python
-  # - table-reader
-  # - git-authors
+  - mkdocstrings:
+      default_handler: python
+  - table-reader
+  - git-authors
+
+
+markdown_extensions:
+    - tables
+    - meta
+    - admonition
+    - pymdownx.keys
+    - pymdownx.highlight
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
+    - pymdownx.details
+    - pymdownx.tabbed:
+        alternate_style: true 
