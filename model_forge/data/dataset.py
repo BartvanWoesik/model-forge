@@ -188,6 +188,14 @@ class Dataset(dict):
 
         raise AttributeError(f"Attribute '{attr_name}' not found")
 
+    def __iter__(self):
+        self._iter_keys = iter(self.keys())
+        return self
+
+    def __next__(self):
+        key = next(self._iter_keys)
+        return key, (self[key][0], self[key][1])
+
     def load_split(
         self,
         split: str,

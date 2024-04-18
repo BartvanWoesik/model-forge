@@ -39,7 +39,9 @@ class ModelEvaluator:
         """
         return list(self._metrics.keys())
 
-    def evaluate(self, model: CustomPipeline, X: np.array, y: np.array) -> Dict[str, float]:
+    def evaluate(
+        self, model: CustomPipeline, X: np.array, y: np.array
+    ) -> Dict[str, float]:
         """
         Evaluate the model using cross-validation and multiple metrics.
 
@@ -52,4 +54,6 @@ class ModelEvaluator:
             A dictionary containing the evaluation results for each metric.
         """
         # TODO: re-write cross_validate to minimize dependence on sklearn
-        return cross_validate(estimator=model, X=X, y=y, scoring=self.metrics, cv=self.cv)
+        return cross_validate(
+            estimator=model, X=X, y=y, scoring=self._metrics, cv=self.cv
+        )
