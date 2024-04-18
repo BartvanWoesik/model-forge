@@ -38,5 +38,6 @@ jobs:
         pip install mkdocs-material
         pip install mkdocstrings
         pip install git+https://github.com/timvink/mkdocs-table-reader-plugin.git
+        pip install git+https://github.com/timvink/mkdocs-git-authors-plugin.git
         poetry install
     - run: mkdocs gh-deploy --force  
