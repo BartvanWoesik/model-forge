@@ -38,4 +38,4 @@ jobs:
         pip install mkdocs-material
         pip install mkdocstrings
         poetry install
-    - run: poetry mkdocs gh-deploy --force  
+    - run: mkdocs gh-deploy --force  
