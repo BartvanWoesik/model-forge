@@ -240,9 +240,9 @@ class ModelPipeline(CustomPipeline):
         # First create list of tuples from the modelsteps list
         pipeline_list = []
         for i, step in enumerate(cfg.model.model_steps):
-            _step_dict = next(iter(step.items()))
-            _step_name = next(iter(step.keys()))
-            pipeline_list.append((_step_name, instantiate(_step_dict[1])))
+            _step_dict = list(step.values())[0]
+            _step_name = list(step.keys())[0]
+            pipeline_list.append((_step_name, instantiate(_step_dict)))
 
         # Create instance of cls
         custom_pipeline = cls(steps=pipeline_list)
