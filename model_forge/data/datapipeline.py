@@ -3,7 +3,6 @@ from copy import deepcopy
 import inspect
 
 from functools import wraps
-from my_logger.custom_logger import logger
 
 
 def safe(fn):
@@ -19,6 +18,7 @@ def safe(fn):
     Returns:
         function: The safe version of the decorated function.
     """
+
     @wraps(fn)
     def wrapper(self, *args, **kwargs):
         cp_args = deepcopy(args)
@@ -81,7 +81,6 @@ class PandasDataPipeline:
                 raise TypeError(
                     f"The step function at step {step_number} does not accept a pandas DataFrame as an argument."
                 )
-            logger.info(step_func)
             # Apply the step
             df = step_func(df)
 
