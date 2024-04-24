@@ -2,7 +2,6 @@ from typing import Dict, Callable, List
 
 import numpy as np
 
-from sklearn.model_selection import cross_validate
 
 from model_forge.model.model_orchastrator import CustomPipeline
 
@@ -40,7 +39,7 @@ class ModelEvaluator:
         return list(self._metrics.keys())
 
     def evaluate(
-        self, model: CustomPipeline, X: np.array, y: np.array
+        self, model: CustomPipeline, cv_strat, X: np.array, y: np.array
     ) -> Dict[str, float]:
         """
         Evaluate the model using cross-validation and multiple metrics.
@@ -53,7 +52,23 @@ class ModelEvaluator:
         Returns:
             A dictionary containing the evaluation results for each metric.
         """
-        # TODO: re-write cross_validate to minimize dependence on sklearn
-        return cross_validate(
-            estimator=model, X=X, y=y, scoring=self._metrics, cv=self.cv
-        )
+
+        scores_dict = {metric: [] for metric in self._metrics.keys()}
+
+        X = np.array(X)
+        y = np.array(y)
+        for train_index, val_index in cv_strat.split(X):
+            X_train, X_val = X[train_index], X[val_index]
+            y_train, y_val = y[train_index], y[val_index]
+
+            model.fit(X_train, y_train)
+
+            kwargs = {"estimator": model, "X": X_val, "y_true": y_val}
+            for metric, func in self._metrics.items():
+                score = func(**kwargs)
+                scores_dict[metric].append(score)
+
+        for metric in scores_dict.keys():
+            scores_dict[metric] = np.mean(scores_dict[metric])
+
+        return scores_dict
