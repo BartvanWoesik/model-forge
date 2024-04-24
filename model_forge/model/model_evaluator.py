@@ -2,6 +2,7 @@ from typing import Dict, Callable, List
 
 import numpy as np
 
+from copy import deepcopy
 
 from model_forge.model.model_orchastrator import CustomPipeline
 
@@ -58,15 +59,17 @@ class ModelEvaluator:
         X = np.array(X)
         y = np.array(y)
         for train_index, val_index in cv_strat.split(X):
+            m = deepcopy(model)
             X_train, X_val = X[train_index], X[val_index]
             y_train, y_val = y[train_index], y[val_index]
 
-            model.fit(X_train, y_train)
+            m.fit(X_train, y_train)
 
-            kwargs = {"estimator": model, "X": X_val, "y_true": y_val}
+            kwargs = {"estimator": m, "X": X_val, "y_true": y_val}
             for metric, func in self._metrics.items():
                 score = func(**kwargs)
                 scores_dict[metric].append(score)
+                print(score)
 
         for metric in scores_dict.keys():
             scores_dict[metric] = np.mean(scores_dict[metric])
