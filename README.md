@@ -1,4 +1,4 @@
-![example workflow](https://github.com/BartvanWoesik/model-forge/blob/main//workflows/ruff.yaml/badge.svg)
+![example workflow](https://github.com/BartvanWoesik/model-forge/main//workflows/ruff.yaml/badge.svg)
 
 # Model Forge
 
