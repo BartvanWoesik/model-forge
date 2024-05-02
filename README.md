@@ -1,3 +1,5 @@
+![example workflow](https://github.com/BartvanWoesik/model-forge/blob/main//workflows/ruff.yaml/badge.svg)
+
 # Model Forge
 
 A framework to easily create machine learning models. It provides part for the orchestration and datapipeline of the machine learning model. 
