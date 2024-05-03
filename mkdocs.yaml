@@ -4,6 +4,7 @@ nav:
   - Model:
     - model evaluator: model_evaluator.md
     - model orchastrator: model_orchastrator.md
+    - Cross Validation: cross_validate.md
   - Data:
     - data pipeline: datapipeline.md
     - dataset: dataset.md
