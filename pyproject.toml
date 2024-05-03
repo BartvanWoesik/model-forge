@@ -19,6 +19,7 @@ pandas = "^1.2.2"
 scikit-learn = "^1.4.0"
 omegaconf = "^2.3.0"
 hydra-core = "^1.3.2"
+mkdocs-git-authors-plugin = {git = "https://github.com/timvink/mkdocs-git-authors-plugin.git"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.1.1"

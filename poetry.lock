@@ -530,6 +530,24 @@ platformdirs = ">=2.2.0"
 pyyaml = ">=5.1"
 
 [[package]]
+name = "mkdocs-git-authors-plugin"
+version = "0.8.0"
+description = "Mkdocs plugin to display git authors of a page"
+optional = false
+python-versions = ">=3.7"
+files = []
+develop = false
+
+[package.dependencies]
+mkdocs = ">=1.0"
+
+[package.source]
+type = "git"
+url = "https://github.com/timvink/mkdocs-git-authors-plugin.git"
+reference = "HEAD"
+resolved_reference = "6acca89d809cc9f6e1f27e2c1e44bf8b3c0ee66a"
+
+[[package]]
 name = "mkdocs-material"
 version = "9.5.20"
 description = "Documentation that simply works"
@@ -1370,4 +1388,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "6b22ff5f2395a563ba80a2f95142a3698a58a58f6cb74ac2a0c99360ec29817e"
+content-hash = "28f188d1c05417c537af8b28b4ac2f08cbe9d058d27cb8eff5a36a2c07575fde"
