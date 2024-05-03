@@ -12,8 +12,9 @@ class BaseCrossValidator(ABC):
         Number of folds. Determines the number of times the data will be split.
     """
 
-    def __init__(self, n_splits=5):
+    def __init__(self, n_splits=5, random_state=1):
         self.n_splits = n_splits
+        self.random_state = random_state
 
     @abstractmethod
     def split(self, X):
@@ -71,15 +72,15 @@ class SimpleCrossValidator(BaseCrossValidator):
 
     def split(self, X):
         indices = np.arange(self._num_samples(X))
+        if self.random_state is not None:
+            np.random.seed(self.random_state)
+            np.random.shuffle(indices)
 
-        for test_index in self._iter_test_indices(X):
+        for test_index in self._iter_test_indices(indices):
             train_index = np.setdiff1d(indices, test_index, assume_unique=True)
             yield train_index, test_index
 
-    def _iter_test_indices(self, X):
-        n_samples = self._num_samples(X)
-        indices = np.arange(n_samples)
-
+    def _iter_test_indices(self, indices):
         for test_index in np.array_split(indices, self.n_splits):
             yield test_index
 
@@ -134,6 +135,10 @@ class GroupCrossValidator(BaseCrossValidator):
 
         if group is None:
             raise ValueError("Groups must be provided for GroupCrossValidator")
+
+        if self.random_state is not None:
+            np.random.seed(self.random_state)
+            np.random.shuffle(group)
 
         unique_groups = np.unique(group)
         n_samples = self._num_samples(X)

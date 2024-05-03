@@ -24,7 +24,8 @@ class TestSimpleCrossValidator:
             assert len(set(split[0]).intersection(set(split[1]))) == 0
             tot_left_out.extend(list(split[1]))
         # Make sure all data has been part of the left out set
-        assert np.array_equal(X, X[tot_left_out])
+        assert len(tot_left_out) == np.unique(tot_left_out).shape[0]
+        assert len(tot_left_out) == X.shape[0]
 
 
 class TestGroupCrossValidator:
