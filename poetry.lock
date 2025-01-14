@@ -588,6 +588,20 @@ files = [
 ]
 
 [[package]]
+name = "mkdocs-print-site-plugin"
+version = "2.5.0"
+description = "MkDocs plugin that combines all pages into one, allowing for easy export to PDF and standalone HTML."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "mkdocs_print_site_plugin-2.5.0-py3-none-any.whl", hash = "sha256:48b3d41ae80384de72062b2712fce677f2e46d8364d9fe603ba837b0cf7156a4"},
+    {file = "mkdocs_print_site_plugin-2.5.0.tar.gz", hash = "sha256:95dccc8d5cc8a59da67815a2d3304ef0101b065e363f2b9ac919c23d6196dd24"},
+]
+
+[package.dependencies]
+mkdocs-material = ">=7.3.0"
+
+[[package]]
 name = "mkdocs-table-reader-plugin"
 version = "2.1.0"
 description = "MkDocs plugin to directly insert tables from files into markdown."
@@ -1388,4 +1402,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "28f188d1c05417c537af8b28b4ac2f08cbe9d058d27cb8eff5a36a2c07575fde"
+content-hash = "fee104a0c2acbb7ed0ecc780a0407751ff9f17f8f5142e9b8b433c1aa99b00a7"

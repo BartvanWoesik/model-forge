@@ -39,11 +39,15 @@ theme:
 
 plugins:
   - search
+  - autorefs
   - mkdocstrings:
       default_handler: python
   - table-reader
   - git-authors
+  - print-site
 
+hooks:
+  - docs/create_sample.py
 
 markdown_extensions:
     - tables
@@ -56,4 +60,4 @@ markdown_extensions:
     - pymdownx.superfences
     - pymdownx.details
     - pymdownx.tabbed:
-        alternate_style: true 
+        alternate_style: true

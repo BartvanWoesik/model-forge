@@ -8,6 +8,7 @@ from model_forge.model.cross_validate import (
 )
 
 
+@pytest.mark.unit
 class TestSimpleCrossValidator:
     def test_split(self):
         validator = SimpleCrossValidator(n_splits=3)
@@ -16,7 +17,6 @@ class TestSimpleCrossValidator:
         X = np.array([[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]])
 
         splits = list(validator.split(X))
-
         assert len(splits) == 3
         tot_left_out = []
         for split in splits:
@@ -51,6 +51,7 @@ class TestGroupCrossValidator:
 
     def test_split_without_groups(self):
         validator = GroupCrossValidator(n_splits=3)
+
         X = np.array([[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]])
 
         with pytest.raises(ValueError):
